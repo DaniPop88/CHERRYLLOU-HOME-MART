@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary | CherrylLou Buenafe Home Mart</title>
+    <meta name="description" content="Review your order and complete your purchase with CherrylLou Buenafe Home Mart. Our team will contact you to finalize your order details.">
+    <link rel="icon" type="image/png" href="image/FAVICON.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400|Roboto:400,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8600;
+            --secondary: #2d2d2d;
+            --background: #fffbe9;
+            --accent: #ffb300;
+            --font-title: 'Montserrat', Arial, sans-serif;
+            --font-body: 'Roboto', Arial, sans-serif;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background: var(--background);
+            color: var(--secondary);
+            min-height: 100vh;
+        }
+        body {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: var(--background);
+            border-bottom: 3px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 998;
+        }
+        .logo-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px 8px 16px;
+        }
+        .logo-bar-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+            object-fit: cover;
+            background: #fff6e0;
+            margin-bottom: 8px;
+        }
+        .logo-bar-title {
+            font-family: var(--font-title);
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #b05a00;
+            text-align: center;
+            margin-bottom: 3px;
+            text-shadow: 0 2px 6px #ffd89c77;
+        }
+        .logo-bar-subtitle {
+            font-family: var(--font-title);
+            background: #fff;
+            color: var(--secondary);
+            font-size: 1.08rem;
+            font-weight: 600;
+            padding: 2px 16px;
+            border-radius: 9px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px #ffd89c44;
+            display: inline-block;
+        }
+        main {
+            max-width: 500px;
+            width: 100%;
+            margin: 34px auto 30px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 26px rgba(0,0,0,0.06);
+            padding: 32px 18px 36px 18px;
+            flex: 1 0 auto;
+        }
+        .summary-title {
+            font-family: var(--font-title);
+            font-size: 1.45rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 9px;
+        }
+        .summary-desc {
+            font-size: 1.04rem;
+            color: #444;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+        .order-table th, .order-table td {
+            border-bottom: 1px solid #ffd89c;
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 1rem;
+        }
+        .order-table th {
+            background: #fffbe9;
+            color: var(--primary);
+            font-family: var(--font-title);
+            font-weight: 700;
+        }
+        .order-table td {
+            color: #444;
+        }
+        .order-total-row td {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.09rem;
+        }
+        .customer-info {
+            margin-bottom: 22px;
+            background: #fffbe9;
+            border-radius: 9px;
+            padding: 14px 12px;
+            box-shadow: 0 2px 8px #ffd89c33;
+        }
+        .customer-info-title {
+            font-family: var(--font-title);
+            color: #b05a00;
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+        .customer-info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 1rem;
+        }
+        .customer-info-list li {
+            margin-bottom: 5px;
+        }
+        .payment-options {
+            margin-bottom: 18px;
+        }
+        .payment-options-title {
+            font-family: var(--font-title);
+            color: #b05a00;
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+        .payment-option-radio {
+            margin-bottom: 7px;
+            display: block;
+        }
+        .submit-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 10px #ffd89c33;
+            transition: background 0.16s;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-btn:active {
+            background: #b05a00;
+        }
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            margin-top: 18px;
+            background: #fffbe9;
+            border-radius: 10px;
+            padding: 20px 12px;
+            box-shadow: 0 2px 12px #ffd89c44;
+        }
+        .confirmation-message.active {
+            display: block;
+        }
+        .confirmation-title {
+            font-size: 1.27rem;
+            color: var(--primary);
+            font-family: var(--font-title);
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+        .confirmation-desc {
+            color: #444;
+            font-size: 1.04rem;
+            margin-bottom: 9px;
+        }
+        .confirmation-note {
+            color: #b05a00;
+            font-size: 1.02rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .confirmation-list {
+            text-align: left;
+            margin: 0 auto 7px auto;
+            padding-left: 14px;
+            max-width: 400px;
+        }
+        .confirmation-alert {
+            background: #ffe0c1;
+            color: #b05a00;
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-size: 0.97rem;
+            margin-top: 8px;
+            margin-bottom: 0;
+            box-shadow: 0 2px 6px #ffd89c33;
+        }
+        footer {
+            background: var(--secondary);
+            color: #fff;
+            padding: 30px 16px 18px 16px;
+            text-align: center;
+            font-size: 1rem;
+            margin-top: auto;
+        }
+        footer .footer-links {
+            margin-bottom: 14px;
+            margin-top: 6px;
+        }
+        footer .footer-links a {
+            color: #ffd89c;
+            text-decoration: underline;
+            margin: 0 18px;
+            font-size: 1.01rem;
+        }
+        footer .footer-brand {
+            font-family: var(--font-title);
+            font-size: 1.13rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+        footer .footer-info {
+            font-size: 0.96rem;
+            color: #ffd89c;
+            margin-bottom: 6px;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 8px 2vw 14px 2vw;
+                margin-top: 6px;
+                margin-bottom: 8px;
+                max-width: 99vw;
+            }
+            .logo-bar-img {
+                width: 70px;
+                height: 70px;
+            }
+            .logo-bar-title {
+                font-size: 1.1rem;
+            }
+            .summary-title {
+                font-size: 1.1rem;
+            }
+            .order-table th, .order-table td {
+                font-size: 0.98rem;
+                padding: 7px 6px;
+            }
+            .customer-info-title,
+            .payment-options-title {
+                font-size: 1rem;
+            }
+            .confirmation-title {
+                font-size: 1.05rem;
+            }
+            .confirmation-desc,
+            .confirmation-note,
+            .confirmation-alert {
+                font-size: 0.97rem;
+            }
+            footer {
+                padding: 12px 2vw 6px 2vw;
+                font-size: 0.93rem;
+            }
+            footer .footer-links a {
+                margin: 0 5px;
+                font-size: 0.94rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-bar">
+            <img src="image/LOGO.png" alt="CherrylLou Buenafe Home Mart Logo" class="logo-bar-img">
+            <span class="logo-bar-title">CHERRYLLOU BUENAFE</span>
+            <span class="logo-bar-subtitle">HOME MART</span>
+        </div>
+    </header>
+    <main>
+        <div class="summary-title">Review Your Order</div>
+        <div class="summary-desc">Thank you for choosing CherrylLou Buenafe Home Mart! Please review your order below and complete your checkout. Our team will be in touch to ensure everything meets your preferences before payment.</div>
+        <table class="order-table" id="orderTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Order items will be inserted here by JS -->
+            </tbody>
+            <tfoot>
+                <tr class="order-total-row">
+                    <td colspan="3" style="text-align:right;">Total</td>
+                    <td id="orderTotalCell">₱0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="customer-info">
+            <div class="customer-info-title">Your Details</div>
+            <ul class="customer-info-list" id="customerInfoList">
+                <li><b>Name:</b> <span id="customerName"></span></li>
+                <li><b>Mobile:</b> <span id="customerMobile"></span></li>
+                <li><b>Email:</b> <span id="customerEmail"></span></li>
+                <li><b>Delivery Address:</b> <span id="customerAddress"></span></li>
+            </ul>
+        </div>
+        <form id="checkoutForm">
+            <div class="payment-options">
+                <div class="payment-options-title">Choose Payment Method</div>
+                <label class="payment-option-radio"><input type="radio" name="payment" value="Cash" required> Cash</label>
+                <label class="payment-option-radio"><input type="radio" name="payment" value="GCash"> GCash</label>
+                <label class="payment-option-radio"><input type="radio" name="payment" value="PayMaya"> PayMaya</label>
+                <label class="payment-option-radio"><input type="radio" name="payment" value="BPI"> Bank Transfer (BPI)</label>
+                <label class="payment-option-radio"><input type="radio" name="payment" value="BDO"> Bank Transfer (BDO)</label>
+            </div>
+            <button type="submit" class="submit-btn">Submit Order</button>
+        </form>
+        <div class="confirmation-message" id="confirmationMessage">
+            <div class="confirmation-title">Order Successfully Submitted!</div>
+            <div class="confirmation-desc">
+                Thank you for placing your order with CherrylLou Buenafe Home Mart.<br>
+                One of our friendly team members will contact you soon to confirm your order details, including your preferred product colors and availability.<br>
+                <span class="confirmation-note">Please verify your order details once contacted so we can process your purchase promptly.</span>
+            </div>
+            <ul class="confirmation-list">
+                <li>After your confirmation, we will send you a payment link based on your chosen payment method.</li>
+                <li>Complete your payment within <b>24 hours</b> to avoid automatic cancellation.</li>
+                <li>If you have questions, our team is ready to assist via chat, call, or email.</li>
+            </ul>
+            <div class="confirmation-alert">
+                <b>Note:</b> Your order is reserved for 24 hours after confirmation. Please ensure payment is made within this period to secure your items.
+            </div>
+        </div>
+    </main>
+    <footer>
+        <span class="footer-brand">CherrylLou Buenafe Home Mart</span>
+        <span class="footer-info">#72 Maharlika Street, Barangay San Isidro, Parañaque City, NCR</span>
+        <span class="footer-info">Phone: +63 965 472 0381 | Email: contact@cherryloubuenafemart.com</span>
+        <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="refund-policy.html">Refund Policy</a>
+        </div>
+        <span style="font-size: 0.96rem; color: #ffd89c;">&copy; 2021-2025 CherrylLou Buenafe Home Mart. All rights reserved.</span>
+    </footer>
+    <script>
+        // Dummy data for demonstration; replace with actual order and customer data integration
+        const orderItems = [
+            { name: "Men’s Slippers", qty: 2, price: 89.00 },
+            { name: "Women’s Everyday Flats", qty: 1, price: 129.00 },
+            { name: "Pambahay Sets", qty: 3, price: 99.00 }
+        ];
+        const customerDetails = {
+            name: "Juan Dela Cruz",
+            mobile: "+63 912 345 6789",
+            email: "juan.delacruz@email.com",
+            address: "#72 Maharlika Street, Brgy. San Isidro, Parañaque City, NCR"
+        };
+        function formatPrice(val) {
+            return "₱" + val.toFixed(2);
+        }
+        function renderOrderTable() {
+            const tbody = document.querySelector("#orderTable tbody");
+            let total = 0;
+            tbody.innerHTML = "";
+            orderItems.forEach(item => {
+                const subtotal = item.qty * item.price;
+                total += subtotal;
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.qty}</td>
+                    <td>${formatPrice(item.price)}</td>
+                    <td>${formatPrice(subtotal)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById("orderTotalCell").textContent = formatPrice(total);
+        }
+        function renderCustomerInfo() {
+            document.getElementById("customerName").textContent = customerDetails.name;
+            document.getElementById("customerMobile").textContent = customerDetails.mobile;
+            document.getElementById("customerEmail").textContent = customerDetails.email;
+            document.getElementById("customerAddress").textContent = customerDetails.address;
+        }
+        document.addEventListener("DOMContentLoaded", function(){
+            renderOrderTable();
+            renderCustomerInfo();
+            document.getElementById("checkoutForm").addEventListener("submit", function(e){
+                e.preventDefault();
+                document.getElementById("checkoutForm").style.display = "none";
+                document.getElementById("confirmationMessage").classList.add("active");
+                window.scrollTo({top: 0, behavior: "smooth"});
+            });
+        });
+    </script>
+</body>
+</html>
