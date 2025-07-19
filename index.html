@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CherrylLou Buenafe Home Mart | Footwear & Clothing Parañaque</title>
+    <meta name="description" content="CherrylLou Buenafe Home Mart: Affordable, stylish footwear and everyday clothing for families in Parañaque City, NCR, Philippines. Locally owned and trusted since 2021.">
+    <link rel="icon" type="image/png" href="image/FAVICON.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400|Roboto:400,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8600;
+            --secondary: #2d2d2d;
+            --background: #fffbe9;
+            --accent: #ffb300;
+            --font-title: 'Montserrat', Arial, sans-serif;
+            --font-body: 'Roboto', Arial, sans-serif;
+            --header-height: 100px;
+            --cart-btn-size: 58px;
+            --cart-popup-width: 350px;
+            --cart-popup-max-width: 92vw;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background: var(--background);
+            color: var(--secondary);
+            min-height: 100vh;
+        }
+        body {
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            background: var(--background);
+            border-bottom: 3px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: box-shadow 0.2s;
+        }
+        .logo-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px 8px 16px;
+        }
+        .logo-bar-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+            object-fit: cover;
+            background: #fff6e0;
+            margin-bottom: 12px;
+        }
+        .logo-bar-title {
+            font-family: var(--font-title);
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #b05a00;
+            text-align: center;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 6px #ffd89c77;
+        }
+        .logo-bar-subtitle {
+            font-family: var(--font-title);
+            background: #fff;
+            color: var(--secondary);
+            font-size: 1.18rem;
+            font-weight: 600;
+            padding: 2px 18px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px #ffd89c44;
+            display: inline-block;
+        }
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            background: #fffbe9;
+            padding: 10px 0 7px 0;
+            margin-bottom: 0;
+            font-family: var(--font-title);
+            transition: max-height 0.2s;
+        }
+        nav a {
+            color: #b05a00;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 7px 18px;
+            border-radius: 8px;
+            font-size: 1.03rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        nav a.active,
+        nav a:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        /* Burger Menu Styles */
+        .burger-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 22px;
+            width: 42px;
+            height: 42px;
+            background: #fffbe9;
+            border: 2px solid var(--primary);
+            border-radius: 9px;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+        .burger-menu.active {
+            box-shadow: 0 2px 8px #ffd89c77;
+        }
+        .burger-bar {
+            display: block;
+            width: 28px;
+            height: 4px;
+            background: var(--primary);
+            margin: 4px 0;
+            border-radius: 3px;
+            transition: transform 0.3s;
+        }
+        /* Cart Button Styles */
+        .cart-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: var(--cart-btn-size);
+            height: var(--cart-btn-size);
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 2px 14px #ffd89c77;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2000;
+            border: none;
+            transition: background 0.2s;
+        }
+        .cart-fab:active {
+            background: #b05a00;
+        }
+        .cart-fab-icon {
+            width: 32px;
+            height: 32px;
+            display: block;
+            margin: auto;
+        }
+        .cart-fab-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            color: var(--primary);
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px #ffd89c44;
+        }
+        /* Cart Popup Styles */
+        .cart-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45,45,45,0.16);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        .cart-popup-overlay.active {
+            display: flex;
+        }
+        .cart-popup {
+            background: #fff;
+            width: var(--cart-popup-width);
+            max-width: var(--cart-popup-max-width);
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 2px 22px #ffd89c77;
+            padding: 28px 20px 18px 20px;
+            margin-bottom: 0;
+            position: relative;
+            animation: popupIn 0.23s;
+        }
+        @keyframes popupIn {
+            from { transform: translateY(60px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .cart-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 18px;
+            font-size: 1.6rem;
+            color: var(--primary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart-popup-title {
+            font-family: var(--font-title);
+            font-size: 1.13rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+        .cart-popup-items {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+            font-size: 1rem;
+        }
+        .cart-popup-items li {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-popup-total {
+            font-weight: 700;
+            font-size: 1.07rem;
+            color: var(--primary);
+            margin-bottom: 18px;
+        }
+        .cart-popup-checkout-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 28px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 10px #ffd89c33;
+            transition: background 0.16s;
+            width: 100%;
+        }
+        .cart-popup-checkout-btn:active {
+            background: #b05a00;
+        }
+        main {
+            max-width: 1200px;
+            margin: 32px auto 24px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 32px rgba(0,0,0,0.06);
+            padding: 40px 24px 36px 24px;
+        }
+        .section {
+            margin-bottom: 48px;
+        }
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 1.65rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+            margin-top: 18px;
+        }
+        .product-card {
+            background: #fffbe9;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(255,134,0,0.06);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+        .product-card:hover {
+            box-shadow: 0 4px 22px rgba(255,134,0,0.14);
+        }
+        .product-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            background: #fff6e0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .product-name {
+            font-family: var(--font-title);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--secondary);
+            text-align: center;
+        }
+        .product-desc {
+            font-size: 1.01rem;
+            color: #444;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .product-info {
+            font-size: 0.97rem;
+            color: #7b583d;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            font-size: 1.13rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 9px;
+        }
+        .add-to-cart-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 22px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px #ffd89c44;
+            transition: background 0.16s;
+        }
+        .add-to-cart-btn:active {
+            background: #b05a00;
+        }
+        #cart-section {
+            background: #fffbe9;
+            border: 1px solid var(--primary);
+            border-radius: 14px;
+            padding: 28px 18px;
+            margin-top: 40px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 2px 18px #ffd89c33;
+        }
+        #cart-section h3 {
+            font-family: var(--font-title);
+            color: var(--primary);
+            font-size: 1.18rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        #cart-items {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+        #cart-items li {
+            font-size: 1.02rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cart-total {
+            font-weight: 700;
+            font-size: 1.08rem;
+            color: var(--primary);
+            margin-bottom: 18px;
+        }
+        #checkout-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 28px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 10px #ffd89c33;
+            transition: background 0.16s;
+        }
+        #checkout-btn:active {
+            background: #b05a00;
+        }
+        footer {
+            background: var(--secondary);
+            color: #fff;
+            padding: 38px 16px 24px 16px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        footer .footer-links {
+            margin-bottom: 14px;
+            margin-top: 6px;
+        }
+        footer .footer-links a {
+            color: #ffd89c;
+            text-decoration: underline;
+            margin: 0 18px;
+            font-size: 1.01rem;
+        }
+        footer .footer-brand {
+            font-family: var(--font-title);
+            font-size: 1.13rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+        footer .footer-info {
+            font-size: 0.96rem;
+            color: #ffd89c;
+            margin-bottom: 6px;
+        }
+        @media (max-width: 900px) {
+            main {
+                padding: 20px 3vw 24px 3vw;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+            .logo-bar-img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        @media (max-width: 700px) {
+            .logo-bar-img {
+                width: 90px;
+                height: 90px;
+            }
+            .logo-bar-title {
+                font-size: 1.3rem;
+            }
+            nav {
+                gap: 12px;
+                font-size: 0.99rem;
+                flex-direction: column;
+                align-items: stretch;
+                max-height: 0;
+                overflow: hidden;
+                padding:0;
+            }
+            nav.show {
+                max-height: 400px;
+                padding: 10px 0 7px 0;
+            }
+            .burger-menu {
+                display: flex;
+            }
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 8px 2vw 14px 2vw;
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+            .section-title {
+                font-size: 1.08rem;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            #cart-section {
+                padding: 12px 4px;
+            }
+            footer {
+                padding: 15px 3vw 8px 3vw;
+                font-size: 0.92rem;
+            }
+            footer .footer-links a {
+                margin: 0 6px;
+                font-size: 0.94rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-bar">
+            <img src="image/LOGO.png" alt="CherrylLou Buenafe Home Mart Logo" class="logo-bar-img">
+            <span class="logo-bar-title">CHERRYLLOU BUENAFE</span>
+            <span class="logo-bar-subtitle">HOME MART</span>
+            <div class="burger-menu" id="burgerMenu" aria-label="Toggle navigation" tabindex="0">
+                <span class="burger-bar"></span>
+                <span class="burger-bar"></span>
+                <span class="burger-bar"></span>
+            </div>
+        </div>
+        <nav id="mainNav">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#products">Products</a>
+            <a href="#contact">Contact</a>
+            <a href="#faq">FAQ</a>
+            <a href="#testimonials">Testimonials</a>
+        </nav>
+    </header>
+    <main>
+        <section class="section" id="home">
+            <h2 class="section-title">Welcome to CherrylLou Buenafe Home Mart</h2>
+            <p>Your trusted neighborhood store for affordable, stylish footwear and everyday clothing in Parañaque City!</p>
+            <p>Mula pambahay hanggang gala — we’ve got you covered! At CherrylLou Buenafe Home Mart, we bring quality fashion and practical clothing closer to your home. We specialize in a wide range of slippers, sandals, shoes, shirts, pambahay wear, and casual outfits for the whole family — all at sulit na presyo.</p>
+            <p>Drop by and feel the local love. Your convenience, comfort, and satisfaction are always our top priority.<br><strong>Tara, bisita na po kayo!</strong></p>
+        </section>
+        <section class="section" id="about">
+            <h2 class="section-title">Tungkol sa Amin</h2>
+            <p><strong>Established in 2021</strong>, CherrylLou Buenafe Home Mart was born out of a simple vision: to offer affordable, quality footwear and clothing to the hardworking families of Parañaque and nearby communities.</p>
+            <p>Locally owned and operated, our humble shop started as a small sari-sari stand that expanded into a full-blown retail store, thanks to the support of our loyal suki. We’re proud to serve our kapitbahay with items that are both practical and fashionable.</p>
+            <ul>
+                <li><b>Tiwala</b> – We value integrity and honesty in all transactions.</li>
+                <li><b>Serbisyo</b> – We serve with a smile, just like in the good old days.</li>
+                <li><b>Sustainability</b> – We support Filipino-made products whenever possible.</li>
+                <li><b>Family First</b> – Our business is built on the needs of Filipino families.</li>
+            </ul>
+            <p><b>Mission:</b> To provide quality everyday wear at affordable prices for every Filipino home.</p>
+            <p><b>Vision:</b> To become the go-to community mart for reliable, stylish, and budget-friendly essentials.</p>
+        </section>
+        <section class="section" id="products">
+            <h2 class="section-title">Products & Services</h2>
+            <p>We carefully select our product lines based on the needs of our community. Here's what you’ll find when you visit our store:</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="image/placeholder1.png" alt="Men’s Slippers Placeholder">
+                    <div class="product-name">Men’s Slippers</div>
+                    <div class="product-desc">Durable and comfortable for daily use.</div>
+                    <div class="product-info">Qty: 15</div>
+                    <div class="product-price">₱89.00</div>
+                    <button class="add-to-cart-btn" data-name="Men’s Slippers" data-price="89.00">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="image/placeholder2.png" alt="Women’s Everyday Flats Placeholder">
+                    <div class="product-name">Women’s Everyday Flats</div>
+                    <div class="product-desc">Stylish and comfortable for work or errands.</div>
+                    <div class="product-info">Qty: 8</div>
+                    <div class="product-price">₱129.00</div>
+                    <button class="add-to-cart-btn" data-name="Women’s Everyday Flats" data-price="129.00">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="image/placeholder3.png" alt="Kids’ School Shoes Placeholder">
+                    <div class="product-name">Kids’ School Shoes</div>
+                    <div class="product-desc">Affordable, sturdy, easy to clean.</div>
+                    <div class="product-info">Qty: 10</div>
+                    <div class="product-price">₱199.00</div>
+                    <button class="add-to-cart-btn" data-name="Kids’ School Shoes" data-price="199.00">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="image/placeholder4.png" alt="Pambahay Sets Placeholder">
+                    <div class="product-name">Pambahay Sets</div>
+                    <div class="product-desc">Soft cotton shorts and sando sets.</div>
+                    <div class="product-info">Qty: 20</div>
+                    <div class="product-price">₱99.00</div>
+                    <button class="add-to-cart-btn" data-name="Pambahay Sets" data-price="99.00">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="image/placeholder5.png" alt="Local Branded Sneakers Placeholder">
+                    <div class="product-name">Local Branded Sneakers</div>
+                    <div class="product-desc">Trendy, Filipino-made, great for travel.</div>
+                    <div class="product-info">Qty: 5</div>
+                    <div class="product-price">₱499.00</div>
+                    <button class="add-to-cart-btn" data-name="Local Branded Sneakers" data-price="499.00">Add to Cart</button>
+                </div>
+            </div>
+            <ul style="margin-top:20px;">
+                <li><b>Bundles & Promos:</b> “Pamilya Pack” – Footwear bundles for the whole family</li>
+                <li>“3-for-₱100” Clothing Rack</li>
+                <li>Weekly discounts for senior citizens and PWDs</li>
+                <li>Layaway options for bulk orders (by request)</li>
+                <li>Local delivery for selected areas within Parañaque and nearby barangays</li>
+            </ul>
+        </section>
+        <section id="cart-section">
+            <h3>Your Cart</h3>
+            <ul id="cart-items"></ul>
+            <div id="cart-total">Total: ₱0.00</div>
+            <button id="checkout-btn" disabled onclick="location.href='order-summary.html'">Checkout</button>
+        </section>
+        <section class="section" id="contact">
+            <h2 class="section-title">Contact Us</h2>
+            <p>May tanong? Naghahanap ng item? Gusto niyo magpareserve? Reach out to us through the following details:</p>
+            <ul>
+                <li><b>Address:</b> #72 Maharlika Street, Barangay San Isidro, Parañaque City, NCR, Philippines</li>
+                <li><b>Phone:</b> <a href="tel:+639654720381">+63 965 472 0381</a></li>
+                <li><b>Email:</b> <a href="mailto:contact@cherryloubuenafemart.com">contact@cherryloubuenafemart.com</a></li>
+                <li><b>Website:</b> <a href="https://www.cherryloubuenafemart.com">www.cherryloubuenafemart.com</a></li>
+            </ul>
+            <p><b>Store Hours:</b> Monday to Saturday – 8:00 AM to 6:00 PM<br>Closed on Sundays (except holiday seasons)</p>
+            <p>📦 Delivery available for nearby barangays. Contact us for coverage.</p>
+        </section>
+        <section class="section" id="faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <ul>
+                <li><b>Q:</b> Do you carry plus sizes?<br><b>A:</b> Yes, we offer inclusive sizes from XS to 3XL for selected items.</li>
+                <li><b>Q:</b> Do you deliver outside Parañaque?<br><b>A:</b> We currently focus on Barangay San Isidro and nearby areas. Special requests may be accommodated.</li>
+                <li><b>Q:</b> Are your products locally made?<br><b>A:</b> Many of our items are sourced from trusted Filipino manufacturers, especially our pambahay wear and slippers.</li>
+                <li><b>Q:</b> Can I resell your products?<br><b>A:</b> Yes! We support resellers. Message us for bulk and reseller pricing.</li>
+            </ul>
+        </section>
+        <section class="section" id="testimonials">
+            <h2 class="section-title">Mga Suki Namin, Nagpapatunay!</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-top: 14px;">
+                <div style="background: #fff6e0; border-radius: 9px; padding: 14px; box-shadow: 0 2px 8px #ffd89c33;">
+                    <span style="font-size:1.2em;">🗣</span> “Napakamura ng prices pero maganda ang quality. Minsan nga, dalawang pares agad binili ko!”<br>
+                    <span style="font-size:0.95em; color:#b05a00;">– Jenny R., Barangay San Isidro</span>
+                </div>
+                <div style="background: #eaf5ea; border-radius: 9px; padding: 14px; box-shadow: 0 2px 8px #ffd89c22;">
+                    <span style="font-size:1.2em;">🗣</span> “Best place for pambahay and slippers. Convenient, malapit lang, at mababait ang staff.”<br>
+                    <span style="font-size:0.95em; color:#b05a00;">– Mang Tonyo, Tricycle Driver</span>
+                </div>
+                <div style="background: #eaf0f5; border-radius: 9px; padding: 14px; box-shadow: 0 2px 8px #ffd89c22;">
+                    <span style="font-size:1.2em;">🗣</span> “Suki na kami dito. Lahat ng anak ko dito ko na binibili ng school shoes.”<br>
+                    <span style="font-size:0.95em; color:#b05a00;">– Aling Myrna, Nanay of 4</span>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h2 class="section-title">Business Details</h2>
+            <ul>
+                <li>Registered under DTI as CherrylLou Buenafe Home Mart</li>
+                <li>TIN/VAT Number: 009-128-452-000 (For Representation Only)</li>
+                <li>Accepted Payment Methods: Cash, GCash, PayMaya, Bank Transfer (BPI/BDO)</li>
+                <li>Follow us on <a href="https://facebook.com/cherryloubuenafemart" target="_blank" rel="noopener">Facebook</a>, <a href="https://instagram.com/cherryloumart.ph" target="_blank" rel="noopener">Instagram</a></li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <span class="footer-brand">CherrylLou Buenafe Home Mart</span>
+        <span class="footer-info">#72 Maharlika Street, Barangay San Isidro, Parañaque City, NCR</span>
+        <span class="footer-info">Phone: +63 965 472 0381 | Email: contact@cherryloubuenafemart.com</span>
+        <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="refund-policy.html">Refund Policy</a>
+        </div>
+        <span style="font-size: 0.96rem; color: #ffd89c;">&copy; 2021-2025 CherrylLou Buenafe Home Mart. All rights reserved.</span>
+    </footer>
+    <!-- Floating Cart Button -->
+    <button class="cart-fab" id="cartFab" aria-label="Show cart">
+        <svg class="cart-fab-icon" viewBox="0 0 48 48" fill="none">
+            <rect x="10" y="15" width="28" height="18" rx="6" fill="#fff"/>
+            <rect x="10" y="15" width="28" height="18" rx="6" stroke="#b05a00" stroke-width="2"/>
+            <circle cx="16" cy="37" r="5" fill="#fff"/>
+            <circle cx="16" cy="37" r="5" stroke="#b05a00" stroke-width="2"/>
+            <circle cx="32" cy="37" r="5" fill="#fff"/>
+            <circle cx="32" cy="37" r="5" stroke="#b05a00" stroke-width="2"/>
+            <rect x="12" y="19" width="24" height="6" rx="2" fill="#ffd89c"/>
+        </svg>
+        <span class="cart-fab-badge" id="cartFabBadge">0</span>
+    </button>
+    <!-- Cart Popup Modal -->
+    <div class="cart-popup-overlay" id="cartPopupOverlay">
+        <div class="cart-popup">
+            <button class="cart-popup-close" id="cartPopupClose" aria-label="Close cart popup">&times;</button>
+            <div class="cart-popup-title">Total Belanja Anda</div>
+            <ul class="cart-popup-items" id="cartPopupItems"></ul>
+            <div class="cart-popup-total" id="cartPopupTotal">Total: ₱0.00</div>
+            <button class="cart-popup-checkout-btn" id="cartPopupCheckoutBtn" disabled onclick="location.href='order-summary.html'">Checkout</button>
+        </div>
+    </div>
+    <!-- Cart Functionality Script + UI Interactions -->
+    <script>
+        // Simple cart data
+        const cart = [];
+        // Main cart section
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                const li = document.createElement('li');
+                li.innerHTML = item.name + ' x ' + item.qty + ' <span style="color:#b05a00;">₱' + (item.price * item.qty).toFixed(2) + '</span>' +
+                    ' <button style="font-size:0.95em;background:transparent;border:none;color:#b05a00;cursor:pointer;" onclick="removeCartItem(' + idx + ')">Remove</button>';
+                cartItems.appendChild(li);
+            });
+            cartTotal.textContent = 'Total: ₱' + total.toFixed(2);
+            document.getElementById('checkout-btn').disabled = cart.length === 0;
+            updateCartFab();
+        }
+        function addToCart(name, price) {
+            const idx = cart.findIndex(i => i.name === name);
+            if (idx > -1) {
+                cart[idx].qty += 1;
+            } else {
+                cart.push({ name, price: parseFloat(price), qty: 1 });
+            }
+            updateCart();
+        }
+        function removeCartItem(idx) {
+            cart.splice(idx, 1);
+            updateCart();
+        }
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                addToCart(this.dataset.name, this.dataset.price);
+            });
+        });
+        updateCart();
+        // Floating Cart Button and Popup Logic
+        function updateCartFab() {
+            const badge = document.getElementById('cartFabBadge');
+            let qtySum = 0;
+            cart.forEach(item => qtySum += item.qty);
+            badge.textContent = qtySum;
+            // Also update popup
+            updateCartPopup();
+        }
+        function updateCartPopup() {
+            const popupItems = document.getElementById('cartPopupItems');
+            const popupTotal = document.getElementById('cartPopupTotal');
+            const checkoutBtn = document.getElementById('cartPopupCheckoutBtn');
+            popupItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                const li = document.createElement('li');
+                li.innerHTML = '<span>' + item.name + ' x ' + item.qty + '</span>' +
+                    '<span style="color:#b05a00;">₱' + (item.price * item.qty).toFixed(2) + '</span>' +
+                    ' <button style="font-size:0.95em;background:transparent;border:none;color:#b05a00;cursor:pointer;" onclick="removeCartItemPopup(' + idx + ')">Remove</button>';
+                popupItems.appendChild(li);
+            });
+            popupTotal.textContent = 'Total: ₱' + total.toFixed(2);
+            checkoutBtn.disabled = cart.length === 0;
+        }
+        function removeCartItemPopup(idx) {
+            cart.splice(idx, 1);
+            updateCart();
+        }
+        // Cart FAB click: open popup
+        document.getElementById('cartFab').addEventListener('click', function(){
+            document.getElementById('cartPopupOverlay').classList.add('active');
+        });
+        // Popup close
+        document.getElementById('cartPopupClose').addEventListener('click', function(){
+            document.getElementById('cartPopupOverlay').classList.remove('active');
+        });
+        // Close popup on click outside
+        document.getElementById('cartPopupOverlay').addEventListener('click', function(e){
+            if(e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        // Sticky header shadow on scroll
+        window.addEventListener('scroll', function(){
+            const header = document.querySelector('header');
+            if(window.scrollY > 12) {
+                header.style.boxShadow = '0 4px 22px #ffd89c77';
+            } else {
+                header.style.boxShadow = '0 2px 8px rgba(0,0,0,0.03)';
+            }
+        });
+        // Burger menu for nav mobile
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mainNav = document.getElementById('mainNav');
+        burgerMenu.addEventListener('click', function(){
+            mainNav.classList.toggle('show');
+            burgerMenu.classList.toggle('active');
+        });
+        burgerMenu.addEventListener('keypress', function(e){
+            if(e.key === 'Enter' || e.key === ' ') {
+                mainNav.classList.toggle('show');
+                burgerMenu.classList.toggle('active');
+            }
+        });
+        // Hide nav when clicking link (mobile)
+        Array.from(mainNav.querySelectorAll('a')).forEach(function(link){
+            link.addEventListener('click', function(){
+                if(window.innerWidth < 701){
+                    mainNav.classList.remove('show');
+                    burgerMenu.classList.remove('active');
+                }
+            });
+        });
+        // Responsive menu on resize
+        window.addEventListener('resize', function(){
+            if(window.innerWidth > 700){
+                mainNav.classList.remove('show');
+                burgerMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
